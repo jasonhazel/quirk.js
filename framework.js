@@ -27,16 +27,17 @@
 		Quirk.ready.wait.push(func);
 	}
 
+
 	Quirk.ready.wait = []
 
 	Quirk.select = {
 		cache : {}, 
 		id : function(selector)
 		{
-			if(!Quirk.select.cache[selector])
-				Quirk.select.cache[selector] = document.getElementById(selector);
+			if(!this.cache[selector])
+				this.cache[selector] = document.getElementById(selector);
 			
-			return Quirk.select.cache[selector];
+			return this.cache[selector];
 		},
 		class : function(selector){
 
