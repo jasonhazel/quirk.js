@@ -1,8 +1,6 @@
 (function(){  
 	var Quirk = function(selector)
-	{
-		//return document.getElementById(selector);
-		
+	{		
 		var type = selector.charAt(0);
 		var element = selector.substring(1,selector.length);
 
@@ -15,21 +13,12 @@
 				return Quirk.select.class(element);
 			break;
 			case '<':
-				if(selector.charAt(selector.length - 1) == '>')
-				{
-					element = selector.substring(1,selector.length - 1);
-					alert(element);
-					return document.createElement(element);
-				}
+				return Quirk.select.new(selector);
 			break;
 			default:
 				return document.getElementsByTagName(selector)[0];
-
 			break;
 		}
-
-
-
 	}
 
 	// add a function to the wait queue.
@@ -54,8 +43,11 @@
 
 		},
 		new : function(selector){
-
-
+			if(selector.charAt(selector.length - 1) == '>')
+			{
+				element = selector.substring(1,selector.length - 1);
+				return document.createElement(element);
+			}
 		}
 
 	}
