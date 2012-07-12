@@ -9,18 +9,17 @@
 		Quirk.ready(function(){
 			var header = Q('#header');
 			header.text(header.text() + "123");
+			var newItem = Q('<a>');
+			
+			newItem.attr('href','http://test.com');
+			newItem.text('Testing');
+
+			header.append(newItem);
+			header.toggle();
+			setTimeout(function(){header.toggle();}, 1000);
 		});
 
-		Q.ready(function(){
-			var header = Q('#header');
-			header.attr('type','testing');
-		});
 
-		Q.ready(function(){
-			var header = Q('#header');
-			header.addClass('testing');
-
-		});
 	</script>
 
 	</head>

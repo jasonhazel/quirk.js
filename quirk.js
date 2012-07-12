@@ -63,6 +63,7 @@
 				break;
 			}
 		}
+		
 		this.attr = function()
 		{
 			switch(arguments.length)
@@ -76,14 +77,46 @@
 				break;
 			}
 		}
+		
 		this.addClass = function(c)
 		{
 			this.element.classList.add(c);
 		}
+		
 		this.removeClass = function(c)
 		{
 			this.element.classList.remove(c);
 		}
+		
+		this.append = function(child)
+		{
+			if(child instanceof qObj)
+				this.element.appendChild(child.element);
+		}
+		
+		this.appendTo = function(parent)
+		{
+			if(child instanceof qObj)
+				parent.element.appendChild(this.element);
+		}
+
+		this.hide = function()
+		{
+			this.element.style.visibility = 'hidden';
+		}
+
+		this.show = function()
+		{
+			this.element.style.visibility = 'visible';
+		}
+
+		this.toggle = function()
+		{
+			this.element.style.visibility = (this.element.style.visibility == 'hidden' ? 'visible' : 'hidden');
+				
+
+		}
+
 	}
 
 	// add a function to the wait queue.
