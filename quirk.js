@@ -63,6 +63,19 @@
 				break;
 			}
 		}
+		this.attr = function()
+		{
+			switch(arguments.length)
+			{
+				case 1:
+					return this.element.getAttribute(arguments[0]);
+				break;
+				case 2:
+					this.element.setAttribute(arguments[0], arguments[1]);
+					return this;
+				break;
+			}
+		}
 	}
 
 	// add a function to the wait queue.

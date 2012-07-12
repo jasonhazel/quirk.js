@@ -8,8 +8,12 @@
 	<script type='text/javascript'>
 		Quirk.ready(function(){
 			var header = Q('#header');
-			alert("Current text of #header is: " + header.text());
 			header.text(header.text() + "123");
+		});
+
+		Q.ready(function(){
+			var header = Q('#header');
+			header.attr('type','testing');
 		});
 	</script>
 
