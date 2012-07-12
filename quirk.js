@@ -76,6 +76,14 @@
 				break;
 			}
 		}
+		this.addClass = function(c)
+		{
+			this.element.classList.add(c);
+		}
+		this.removeClass = function(c)
+		{
+			this.element.classList.remove(c);
+		}
 	}
 
 	// add a function to the wait queue.
