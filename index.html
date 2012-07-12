@@ -1,8 +1,18 @@
 <html>
 	<head>
 		<title>JS Framework Test</title>
-		<script type='text/javascript' src='framework.js'></script>
+		<script type='text/javascript' src='quirk.js'></script>
 		<link rel="stylesheet" type="text/css" href="style.css" />
+
+
+	<script type='text/javascript'>
+		Quirk.ready(function(){
+			var header = Q('#header');
+			alert("Current text of #header is: " + header.text());
+			header.text(header.text() + "123");
+		});
+	</script>
+
 	</head>
 
 	<body>
