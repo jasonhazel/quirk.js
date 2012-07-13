@@ -66,9 +66,9 @@
 	// this is where most of the magic happens.
 	var qObj = function(element)
 	{
-		this.element = element;
-		this.type = element.tagName.toLowerCase();
-		this.events = []
+		this.element 	= element;
+		this.type 		= element.tagName.toLowerCase();
+		this.events 	= []
 
 		// kinda hacky right now.
 		// not all objects require all methods.  Here we provided object specific methods.
@@ -91,6 +91,7 @@
 		this.off = function(action)
 		{
 			this.element.removeEventListener(action, this.events[action]);
+			return this;
 		}
 
 		this.text = function()
@@ -124,11 +125,13 @@
 		this.addClass = function(c)
 		{
 			this.element.classList.add(c);
+			return this;
 		}
 		
 		this.removeClass = function(c)
 		{
 			this.element.classList.remove(c);
+			return this;
 		}
 		
 		this.append = function(child)
@@ -137,6 +140,7 @@
 				this.element.appendChild(child.element);
 			else
 				this.element.appendChild(child);
+			return this;
 		}
 		
 		this.appendTo = function(parent)
@@ -146,22 +150,25 @@
 				parent.element.appendChild(this.element);
 			else
 				parent.appendChild(this.element);
+			return this;
 		}
 
 		this.hide = function()
 		{
 			this.element.style.visibility = 'hidden';
+			return this;
 		}
 
 		this.show = function()
 		{
 			this.element.style.visibility = 'visible';
+			return this;
 		}
 
 		this.toggle = function()
 		{
 			this.element.style.visibility = (this.element.style.visibility == 'hidden' ? 'visible' : 'hidden');
-				
+			return this;
 
 		}
 
