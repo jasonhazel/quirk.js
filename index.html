@@ -6,16 +6,17 @@
 		<script type='text/javascript'>
 			Quirk.ready(function(){
 				var body 	= Q('body');
-				var header 	= Q('#header');
 				var button 	= Q('<button>');
+				var text 	= Q('<input>');
 
-				button.on('click',function(){
-					button.off('click');
-					header.text('Where did the button go?');
-					button.remove();
-				}).text('Click');
 
+				button.text('Testing');
+
+
+				text.appendTo(body);
 				button.appendTo(body);
+
+				button.on('click', function(){alert(text.text());});
 			});
 
 

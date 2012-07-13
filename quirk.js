@@ -97,15 +97,32 @@
 
 		this.text = function()
 		{
-			switch(arguments.length)
+			if(this.type != 'input')
 			{
-				case 0:
-					return this.element.innerHTML;
-				break;
-				case 1:
-					this.element.innerHTML = arguments[0];
-					return this;
-				break;
+
+				switch(arguments.length)
+				{
+					case 0:
+						return this.element.innerHTML;
+					break;
+					case 1:
+						this.element.innerHTML = arguments[0];
+						return this;
+					break;
+				}
+			}
+			else 
+			{
+				switch(arguments.length)
+				{
+					case 0:
+						return this.element.value;
+					break;
+					case 1:
+						this.element.value = arguments[0];
+						return this;
+					break;
+				}
 			}
 		}
 		
