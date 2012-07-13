@@ -71,7 +71,6 @@
 		this.type 		= element.tagName.toLowerCase();
 		this.events 	= []
 
-		
 		// not all objects require all methods.  Here we provided object specific methods.
 		switch(this.type)
 		{

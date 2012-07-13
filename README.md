@@ -1,9 +1,11 @@
 ## Quirk.js ##
 This is a javascript framework for personal use.  After several days of writing vanilla Javascript, I snapped.  I decided that creating my own framework would be a good idea for two reasons; To get better at Javascript and to stop by getElementById.
 
-### WARNING ###
-Nothing about this is pretty.  If you even attempt to use this, you're probably not too bright.  
+As of right now, all testing has been done in Chrome (Version 20.0.1132.57), so things may not work in other browsers.  Testing additional browsers will happen at a later time.
 
+I've tried to mimic the way jQuery does things, so it should feel familiar.
+
+### WARNING ###
 THIS IS NOWHERE NEAR PRODUCTION QUALITY.  YOU HAVE BEEN WARNED!
 
 ### Known Issues ###
