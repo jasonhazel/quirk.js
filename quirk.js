@@ -80,6 +80,7 @@
 			break;
 		}
 
+		//event listeners
 		this.on = function(action, func)
 		{
 			this.events[action] = func;
@@ -145,7 +146,6 @@
 		
 		this.appendTo = function(parent)
 		{
-			console.debug(parent);
 			if(parent instanceof qObj)
 				parent.element.appendChild(this.element);
 			else
@@ -169,7 +169,6 @@
 		{
 			this.element.style.visibility = (this.element.style.visibility == 'hidden' ? 'visible' : 'hidden');
 			return this;
-
 		}
 
 	}
