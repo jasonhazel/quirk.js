@@ -3,31 +3,29 @@
 		<title>JS Framework Test</title>
 		<script type='text/javascript' src='quirk.js'></script>
 		<link rel="stylesheet" type="text/css" href="style.css" />
+		<script type='text/javascript'>
+			Quirk.ready(function(){
+				var body 	= Q('body');
+				var header 	= Q('#header');
+				var button 	= Q('<button>');
+
+				button.on('click',function(){
+					button.off('click');
+					header.text('Where did the button go?');
+					button.remove();
+				}).text('Click');
+
+				button.appendTo(body);
+			});
 
 
-	<script type='text/javascript'>
-		Quirk.ready(function(){
-			var body = Q('body');
-
-			var button = Q('<button>');
-
-			button.on('click',function(){
-				alert('turning off');
-				button.off('click');
-
-			}).text('Click');
-
-			button.appendTo(body);
-		});
-
-
-	</script>
+		</script>
 
 	</head>
 
 	<body>
 
-		<div id='header'>Test</div>
+		<div id='header'></div>
 
 
 	</body>

@@ -66,11 +66,12 @@
 	// this is where most of the magic happens.
 	var qObj = function(element)
 	{
+		// kinda hacky right now.
 		this.element 	= element;
 		this.type 		= element.tagName.toLowerCase();
 		this.events 	= []
 
-		// kinda hacky right now.
+		
 		// not all objects require all methods.  Here we provided object specific methods.
 		switch(this.type)
 		{
@@ -89,7 +90,7 @@
 			return this;
 		}
 
-		this.off = function(action)
+		this.off = function(action) //I don't like calling this off. needs a better name.
 		{
 			this.element.removeEventListener(action, this.events[action]);
 			return this;
@@ -168,6 +169,12 @@
 		this.toggle = function()
 		{
 			this.element.style.visibility = (this.element.style.visibility == 'hidden' ? 'visible' : 'hidden');
+			return this;
+		}
+
+		this.remove = function()
+		{
+			this.element.parentNode.removeChild(this.element);
 			return this;
 		}
 
