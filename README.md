@@ -1,15 +1,12 @@
-# Quirk.js #
+## Quirk.js ##
+This is a javascript framework for personal use.  After several days of writing vanilla Javascript, I snapped.  I decided that creating my own framework would be a good idea for two reasons; To get better at Javascript and to stop by getElementById.
 
-
-## Overview ##
-After spending two days writing vanilla JavaScript, I snapped. I decided to work on a simple framework for two reasons; To get better at JavaScript and to stop typing getElementById.
-
-## WARNING ##
+### WARNING ###
 Nothing about this is pretty.  If you even attempt to use this, you're probably not too bright.  
 
 THIS IS NOWHERE NEAR PRODUCTION QUALITY.  YOU HAVE BEEN WARNED!
 
-## Known Issues ##
+### Known Issues ###
 
 * Only one listener per action.
 * HTML5 only (addClass and removeClass)
