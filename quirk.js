@@ -17,7 +17,7 @@
 				e = Quirk.select.new(selector);
 			break;
 			default:
-				return document.getElementsByTagName(selector)[0];
+				e = document.getElementsByTagName(selector)[0];
 			break;
 		}
 		return new qObj(e);
@@ -68,7 +68,7 @@
 	{
 		// kinda hacky right now.
 		this.element 	= element;
-		this.type 		= element.tagName.toLowerCase();
+		this.type 		= this.element.tagName.toLowerCase();
 		this.events 	= []
 
 		// not all objects require all methods.  Here we provided object specific methods.
@@ -80,7 +80,7 @@
 			break;
 		}
 
-		//event listeners
+		//event listener
 		this.on = function(action, func)
 		{
 			if(this.events[action] == undefined)
@@ -91,7 +91,8 @@
 			return this;
 		}
 
-		this.off = function(action) //I don't like calling this off. needs a better name.
+		//I don't like calling this off. needs a better name.
+		this.off = function(action) 
 		{
 			for(func in this.events[action])
 				this.element.removeEventListener(action, this.events[action][func]);
@@ -99,8 +100,7 @@
 			return this;
 		}
 
-
-		//kinda hacky
+		// I'm sure there is a better way to do this.
 		this.text = function(value)
 		{
 			if(this.type != 'input')
@@ -116,9 +116,8 @@
 					this.element.value = value;
 				else
 					return this.element.value;
-
-
 			}
+			return this;
 		}
 		
 		this.attr = function()

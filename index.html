@@ -8,23 +8,17 @@
 				var body 	= Q('body');
 				var button 	= Q('<button>');
 				var text 	= Q('<input>');
-				var header	= Q('#header');
+				var header	= Q('<h1>');
 
-				button.text('Testing');
-				text.text('Testing Textbox');
+				header.text('Quirk.js Test');
 
-				header.text('testing');
-				alert(header.text());
-
-				text.appendTo(body);
-				button.appendTo(body);
+				body.append(header)
+					.append(text)
+					.append(button.text('Display'));
 
 				button.on('click', function(){
-					alert(text.text());
+						alert(text.text());
 				});
-
-
-				// button.on('click', function(){alert(1)});
 			});
 		</script>
 
@@ -32,7 +26,6 @@
 
 	<body>
 
-		<div id='header'></div>
 
 
 	</body>
