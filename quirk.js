@@ -4,20 +4,23 @@
 		var type = selector.charAt(0);
 		var element = selector.substring(1,selector.length);
 
-
 		switch(type)
 		{
 			case '#':
-				e = Quirk.select.id(element);
+				return new qObj(Quirk.select.id(element));
 			break;
 			case '.':
 				e = Quirk.select.class(element);
 			break;
 			case '<':
-				e = Quirk.select.new(selector);
+				return new qObj(Quirk.select.new(selector));
 			break;
 			default:
-				e = document.getElementsByTagName(selector)[0];
+				e = Quirk.select.tag(selector);
+				if(e.length > 1)
+					return new qCollection(e);
+				else
+					return (e[0] == undefined ? new qCollection([]) : new qObj(e[0]));
 			break;
 		}
 		return new qObj(e);
@@ -31,24 +34,10 @@
 
 	Quirk.ready.queue = []
 
-	//once document is loaded, loop through the wait list and execute and functions.
-	document.onreadystatechange = function()
-	{
-		if(document.readyState == 'complete')
-		{
-			for(var i=0; i < Quirk.ready.queue.length; i++)
-				Quirk.ready.queue[i]();
-		}
-	}
-
 	Quirk.select = {
-		cache : {}, 
 		id : function(selector)
 		{
-			if(!this.cache[selector])
-				this.cache[selector] = document.getElementById(selector);
-			
-			return this.cache[selector];
+			return document.getElementById(selector);
 		},
 		class : function(selector){
 			// TODO
@@ -59,8 +48,50 @@
 				element = selector.substring(1,selector.length - 1);
 				return document.createElement(element);
 			}
+		},
+		tag : function(selector){
+			return document.getElementsByTagName(selector);
 		}
 
+	}
+
+	var qCollection = function(elements)
+	{
+		var collection = []
+		this.position = 0;
+
+		for(var item = 0; item < elements.length; item++)
+		{
+
+			if(elements[item] != undefined)
+				collection.push(new qObj(elements[item]));
+		}	
+
+		this.each = function(func)
+		{
+			if(this.length > 0)
+			{
+				for(var item = 0; item < collection.length; item++)
+				{
+					func(collection[item]);	
+				}
+			}
+		}
+
+		this.next = function()
+		{
+			if(this.position == this.length)
+				return null;
+			else
+				return collection[this.position++];
+		}
+
+		this.reset = function()
+		{
+			position = 0;
+		}
+
+		this.length = collection.length;
 	}
 
 	// this is where most of the magic happens.
@@ -192,6 +223,16 @@
 			return this;
 		}
 
+	}
+
+	//once document is loaded, loop through the wait list and execute and functions.
+	document.onreadystatechange = function()
+	{
+		if(document.readyState == 'complete')
+		{
+			for(var i=0; i < Quirk.ready.queue.length; i++)
+				Quirk.ready.queue[i]();
+		}
 	}
 
 	if(!window.Q || !window.Quirk){window.Quirk = window.Q = Quirk;}
