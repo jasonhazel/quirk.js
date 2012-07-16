@@ -11,10 +11,23 @@
 				var header	= Q('<h1>');
 
 
-				var a = Q('a');
+
+
+				body.append(header.text('Quirk.js Test'))
+					.append(text)
+					.append(button.text('Display'));
+
+				text.addClass('bold');
+				button.addClass('bold');
+				button.addClass('remove_bold');
+				var a = Q('.remove_bold');
+
+
+
+
 
 				a.each(function(e){
-					e.href('testing.com').text('this is a test');
+					e.removeClass('bold');
 				});
 
 				// while(y = a.next())
@@ -22,13 +35,6 @@
 				// 	y.text(a.position);
 				// 	y.href('testing.com');
 				// }
-
-				body.append(header.text('Quirk.js Test'))
-					.append(text)
-					.append(button.text('Display'));
-
-
-
 
 				button.on('click', function(){
 						alert(text.text());

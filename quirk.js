@@ -3,66 +3,45 @@
 	{
 		var type = selector.charAt(0);
 		var element = selector.substring(1,selector.length);
-
 		switch(type)
 		{
 			case '#':
-				return new qObj(Quirk.select.id(element));
+				return new qObj(document.getElementById(element));
 			break;
 			case '.':
-				e = Quirk.select.class(element);
+				return new qCollection(document.getElementsByClassName(element));
+
 			break;
 			case '<':
-				return new qObj(Quirk.select.new(selector));
+				if(element.charAt(element.length - 1) == '>')
+					return new qObj(document.createElement(selector.substring(1,element.length)));
+				else
+					return new qCollection();
 			break;
 			default:
-				e = Quirk.select.tag(selector);
+				e = document.getElementsByTagName(selector);
 				if(e.length > 1)
 					return new qCollection(e);
 				else
-					return (e[0] == undefined ? new qCollection([]) : new qObj(e[0]));
+					return (e[0] == undefined ? new qCollection() : new qObj(e[0]));
 			break;
 		}
 		return new qObj(e);
 	}
 
 	// add a function to the wait queue.
-	Quirk.ready = function(func)
-	{
-		Quirk.ready.queue.push(func);
-	}
+	
+	Quirk.ready = function(func) { Quirk.ready.queue.push(func); }
 
-	Quirk.ready.queue = []
-
-	Quirk.select = {
-		id : function(selector)
-		{
-			return document.getElementById(selector);
-		},
-		class : function(selector){
-			// TODO
-		},
-		new : function(selector){
-			if(selector.charAt(selector.length - 1) == '>')
-			{
-				element = selector.substring(1,selector.length - 1);
-				return document.createElement(element);
-			}
-		},
-		tag : function(selector){
-			return document.getElementsByTagName(selector);
-		}
-
-	}
-
+Quirk.ready.queue = []
 	var qCollection = function(elements)
 	{
+		if(elements == undefined) elements = []
 		var collection = []
 		this.position = 0;
 
 		for(var item = 0; item < elements.length; item++)
 		{
-
 			if(elements[item] != undefined)
 				collection.push(new qObj(elements[item]));
 		}	
@@ -72,9 +51,7 @@
 			if(this.length > 0)
 			{
 				for(var item = 0; item < collection.length; item++)
-				{
 					func(collection[item]);	
-				}
 			}
 		}
 
@@ -130,7 +107,6 @@
 		{
 			for(func in this.events[action])
 				this.element.removeEventListener(action, this.events[action][func]);
-
 			return this;
 		}
 
