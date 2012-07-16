@@ -9,14 +9,9 @@ As of right now, all testing has been done in Chrome (Version 20.0.1132.57), so 
 
 I've tried to mimic the way jQuery does things, so it should feel familiar.
 
-
-
 ### Issues ###
 If you come across any issues, please use the [Issue Tracker](https://github.com/mrhazel/quirk.js/issues).
 
+### Internet Explorer ###
 
-### Known Issues ###
-
-* Only one listener per action.
-* HTML5 only (addClass and removeClass)
-* Probably won't work with anything less than IE9.
+Internet Explorer is a pain in the ass, we are all aware of it.  As it stands, this library will be written for Webkit/Gecko based browsers.  Down the road I might add some sort of IE specific support but, I'm not looking forward to it.

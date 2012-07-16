@@ -4,22 +4,28 @@
 		<script type='text/javascript' src='quirk.js'></script>
 		<link rel="stylesheet" type="text/css" href="style.css" />
 		<script type='text/javascript'>
-			Quirk.ready(function(){
+			Q.ready(function(){
 				var body 	= Q('body');
 				var button 	= Q('<button>');
 				var text 	= Q('<input>');
-
+				var header	= Q('#header');
 
 				button.text('Testing');
+				text.text('Testing Textbox');
 
+				header.text('testing');
+				alert(header.text());
 
 				text.appendTo(body);
 				button.appendTo(body);
 
-				button.on('click', function(){alert(text.text());});
+				button.on('click', function(){
+					alert(text.text());
+				});
+
+
+				// button.on('click', function(){alert(1)});
 			});
-
-
 		</script>
 
 	</head>

@@ -83,45 +83,41 @@
 		//event listeners
 		this.on = function(action, func)
 		{
-			this.events[action] = func;
+			if(this.events[action] == undefined)
+				this.events[action] = []
 
-			this.element.addEventListener(action, this.events[action], false);
+			this.events[action].push(func);
+			this.element.addEventListener(action, func , false);
 			return this;
 		}
 
 		this.off = function(action) //I don't like calling this off. needs a better name.
 		{
-			this.element.removeEventListener(action, this.events[action]);
+			for(func in this.events[action])
+				this.element.removeEventListener(action, this.events[action][func]);
+
 			return this;
 		}
 
-		this.text = function()
+
+		//kinda hacky
+		this.text = function(value)
 		{
 			if(this.type != 'input')
 			{
-				switch(arguments.length)
-				{
-					case 0:
-						return this.element.innerHTML;
-					break;
-					case 1:
-						this.element.innerHTML = arguments[0];
-						return this;
-					break;
-				}
+				if(value != undefined)
+					this.element.innerHTML = value;
+				else
+					return this.element.innerHTML;
 			}
 			else 
 			{
-				switch(arguments.length)
-				{
-					case 0:
-						return this.element.value;
-					break;
-					case 1:
-						this.element.value = arguments[0];
-						return this;
-					break;
-				}
+				if(value != undefined)
+					this.element.value = value;
+				else
+					return this.element.value;
+
+
 			}
 		}
 		
@@ -139,15 +135,15 @@
 			}
 		}
 		
-		this.addClass = function(c)
+		this.addClass = function(klass)
 		{
-			this.element.classList.add(c);
+			this.element.classList.add(klass);
 			return this;
 		}
 		
-		this.removeClass = function(c)
+		this.removeClass = function(klass)
 		{
-			this.element.classList.remove(c);
+			this.element.classList.remove(klass);
 			return this;
 		}
 		
@@ -163,7 +159,7 @@
 		this.appendTo = function(parent)
 		{
 			if(parent instanceof qObj)
-				parent.element.appendChild(this.element);
+				parent.append(this.element);
 			else
 				parent.appendChild(this.element);
 			return this;
@@ -195,6 +191,6 @@
 
 	}
 
-	if(!window.$q || !window.Quirk){window.$q = window.Quirk = window.Q = Quirk;}
+	if(!window.Q || !window.Quirk){window.Quirk = window.Q = Quirk;}
 })();
 
