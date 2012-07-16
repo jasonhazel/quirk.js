@@ -9,12 +9,16 @@
 				var button 	= Q('<button>');
 				var text 	= Q('<input>');
 				var header	= Q('<h1>');
-
+				var a 		= Q('<a>');
+				a.href('http://jasonhazel.com').text('Testing').data('test','one');
+				alert(a.data('test'));
 				header.text('Quirk.js Test');
+
 
 				body.append(header)
 					.append(text)
-					.append(button.text('Display'));
+					.append(button.text('Display'))
+					.append(a);
 
 				button.on('click', function(){
 						alert(text.text());

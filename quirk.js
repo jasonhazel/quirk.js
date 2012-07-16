@@ -75,10 +75,13 @@
 		switch(this.type)
 		{
 			case 'a':
-				this.href 	= function(url) 	{ this.attr('href',url); 		return this;}
-				this.target = function(target) 	{ this.attr('target',target); 	return this;}
+				this.href 	= function(url) 	{ return this.attr('href', url); }
+				this.target = function(target) 	{ return this.attr('target', target); }
 			break;
 		}
+
+		this.id 	= function(id)			{ return this.attr('id',id); }
+		this.data 	= function(item, value)	{ return this.attr('data-' + item, value); }
 
 		//event listener
 		this.on = function(action, func)
@@ -120,18 +123,19 @@
 			return this;
 		}
 		
-		this.attr = function()
+		this.attr = function(key, value)
 		{
-			switch(arguments.length)
+			if(value != undefined && key != undefined)
 			{
-				case 1:
-					return this.element.getAttribute(arguments[0]);
-				break;
-				case 2:
-					this.element.setAttribute(arguments[0], arguments[1]);
-					return this;
-				break;
+				this.element.setAttribute(key, value);
+				return this;
 			}
+			else if (key != undefined)
+			{
+				return this.element.getAttribute(key);
+			}
+			else
+				return this;
 		}
 		
 		this.addClass = function(klass)
