@@ -6,7 +6,7 @@ As of right now, all testing has been done in Chrome (Version 20.0.1132.57), so 
 I've tried to mimic the way jQuery does things, so it should feel familiar.
 
 ### Issues ###
-If you come across any issues, please use the (Issue Tracker)[https://github.com/mrhazel/quirk.js/issues].
+If you come across any issues, please use the [Issue Tracker](https://github.com/mrhazel/quirk.js/issues).
 
 ### WARNING ###
 THIS IS NOWHERE NEAR PRODUCTION QUALITY.  YOU HAVE BEEN WARNED!
