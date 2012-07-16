@@ -99,7 +99,6 @@
 		{
 			if(this.type != 'input')
 			{
-
 				switch(arguments.length)
 				{
 					case 0:
