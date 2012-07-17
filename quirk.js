@@ -10,7 +10,6 @@
 			break;
 			case '.':
 				return new qCollection(document.getElementsByClassName(element));
-
 			break;
 			case '<':
 				if(element.charAt(element.length - 1) == '>')
@@ -26,11 +25,9 @@
 					return (e[0] == undefined ? new qCollection() : new qObj(e[0]));
 			break;
 		}
-		return new qObj(e);
 	}
 
 	// add a function to the wait queue.
-	
 	Quirk.ready = function(func) { Quirk.ready.queue.push(func); }
 
 Quirk.ready.queue = []
@@ -48,16 +45,13 @@ Quirk.ready.queue = []
 
 		this.each = function(func)
 		{
-			if(this.length > 0)
-			{
-				for(var item = 0; item < collection.length; item++)
-					func(collection[item]);	
-			}
+			for(var item = 0; item < collection.length; item++)
+				func(collection[item]);	
 		}
 
 		this.next = function()
 		{
-			if(this.position == this.length)
+			if(this.position >= this.length)
 				return null;
 			else
 				return collection[this.position++];
