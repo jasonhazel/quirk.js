@@ -7,22 +7,11 @@
 			Q.ready(function()
 			{
 				var body = Q('body');
-				var a = Q('<a>');
-				var b = Q('<a>')
+				var contents = Q('<div>');
 
-				a.text('testing').href('http://craptard.com');
-				b.text('test2');
-				
-				b.prependTo(body);
-				body.prepend(a);
+				contents.appendTo(body);
+				contents.load({url: 'ajax.txt'})
 
-				var opt = {
-					url: 'ajax.txt'
-				}
-
-				Q.ajax(opt,function(d){alert(d);},function(d){alert(d);});
-
-				a.on('click',function(){b.toggle(); preventDefault});
 			});
 		</script>
 

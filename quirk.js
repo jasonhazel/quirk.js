@@ -94,15 +94,12 @@
 			success(xhr.responseText);
 		else{
 				xhr.onreadystatechange = function(){
-					console.debug(options);
-					console.debug(xhr);
 					if(xhr.readyState == 4 && xhr.status == 200)
 						if(success != undefined) success(xhr.responseText);
 					else
-						if(failure != undefined) failure(xhr.status, xhr.responseText);
+						if(failure != undefined) failure({status: xhr.status, text: xhr.responseText});
 			}
 		}
-
 
 		xhr.open(options.type, options.url, options.async);
 		xhr.send((options.type != 'GET' ? options.query : null));
@@ -250,6 +247,16 @@
 
 		this.toggle = function(){
 			_element.style.visibility = (_element.style.visibility == 'hidden' ? 'visible' : 'hidden');
+		}
+
+		this.load = function(options){
+			Quirk.ajax(options, function(data){
+				this.text(data);
+			}, function(data){
+				this.text(data.text);
+			})
+
+
 		}
 	}
 
