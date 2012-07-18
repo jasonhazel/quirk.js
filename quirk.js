@@ -35,17 +35,80 @@
 	}
 	
 	//utility methods
-	Quirk.isArray 		= function(variable){ 
+	Quirk.isArray = function(variable){ 
 		return (variable instanceof Array); 
 	}
 
-	Quirk.isNodeList 	= function(variable){ 
+	Quirk.isNodeList = function(variable){ 
 		return (variable instanceof NodeList); 
 	}
-	Quirk.isList 		= function(variable){ 
+	Quirk.isList = function(variable){ 
 		return Quirk.isArray(variable) || Quirk.isNodeList(variable); 
 	}
 
+	Quirk.objectMerge = function(first, second)
+	{
+		for(item in second){
+			if(!first.hasOwnProperty(item))
+				first[item] = second[item];
+		}
+		return first;
+	}
+
+
+	Quirk.objectJoin = function(object, glue)
+	{
+		var result = []
+		for(item in object)
+			result.push(object[item]);
+		
+		return result.join(glue);
+	}
+
+	Quirk.ajax = function(options, success, failure)
+	{
+		if(!options.hasOwnProperty('url'))
+			return null;
+
+		var defaults = {
+			type: 'GET',
+			async: true,
+			query: {}
+		}
+
+
+
+		options = Quirk.objectMerge(options, defaults);
+
+		options.type.toUpperCase();
+
+		if(typeof(options.query) == 'object')
+			if(options.type == 'GET')
+				options.url = options.url + '?' + Quirk.objectJoin(options.query, '&');
+			else
+				options.query = Quirk.objectJoin(options.query, '&');
+
+		var xhr = new XMLHttpRequest();
+
+		if(options.async !== true)
+			success(xhr.responseText);
+		else{
+				xhr.onreadystatechange = function(){
+					console.debug(options);
+					console.debug(xhr);
+					if(xhr.readyState == 4 && xhr.status == 200)
+						if(success != undefined) success(xhr.responseText);
+					else
+						if(failure != undefined) failure(xhr.status, xhr.responseText);
+			}
+		}
+
+
+		xhr.open(options.type, options.url, options.async);
+		xhr.send((options.type != 'GET' ? options.query : null));
+	}
+
+	// QuirkCollections - basically, an array of QuirkObjects.  Gives some additional functionality.
 	var QuirkCollection = function(elements){
 		var collection = []
 		if(Quirk.isNodeList(elements)){

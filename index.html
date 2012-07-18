@@ -16,9 +16,13 @@
 				b.prependTo(body);
 				body.prepend(a);
 
+				var opt = {
+					url: 'style.css'
+				}
+
+				Q.ajax(opt,function(d){alert(d);},function(d){alert(d);});
+
 				a.on('click',function(){b.toggle(); preventDefault});
-
-
 			});
 		</script>
 
@@ -27,5 +31,4 @@
 	<body>
 
 	</body>
-	
 </html>
