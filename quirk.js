@@ -75,11 +75,7 @@
 		if(!options.hasOwnProperty('url'))
 			return null;
 
-		var defaults = {
-			type: 'GET',
-			async: true,
-			query: {}
-		}
+		var defaults = { type: 'GET', async: true, query: {} }
 
 		options = Quirk.objectMerge(options, defaults);
 
@@ -276,5 +272,6 @@
 		for(var i=0; i < Quirk.ready.queue.length; i++) 
 			Quirk.ready.queue[i]();
 	}, false);
+	
 	if(!window.Q || !window.Quirk){window.Quirk = window.Q = Quirk;}
 })();
