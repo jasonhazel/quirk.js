@@ -250,8 +250,10 @@
 		}
 
 		this.load = function(options){
+			
+			var destination = this;
 			Quirk.ajax(options, function(data){
-				this.text(data);
+				destination.text(data);
 			}, function(data){
 				this.text(data.text);
 			})
