@@ -7,11 +7,15 @@
 			Q.ready(function()
 			{
 				var body = Q('body');
-				var contents = Q('div');
+				var a = Q('a');
 
-				contents.on('click', function()
-				{
-					alert(Q(this).text());
+				a.on('click',function(e){
+					alert(1);
+
+					console.debug(e);
+
+					// this.stopPropagation();
+					e.preventDefault();
 				});
 
 			});
@@ -20,8 +24,6 @@
 	</head>
 
 	<body>
-		<div>one</div>
-		<div>two</div>
-		<div>three</div>
+		<a href='http://jasonhazel.com'>testing</a>
 	</body>
 </html>

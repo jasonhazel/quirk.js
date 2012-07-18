@@ -33,7 +33,7 @@
 		}
 	}
 
-	Quirk.ready 		= function(func){
+	Quirk.ready = function(func){
 		if(Quirk.ready.queue == undefined)
 			Quirk.ready.queue = []
 		Quirk.ready.queue.push(func);
@@ -106,23 +106,25 @@
 
 	// QuirkCollections - basically, an array of QuirkObjects.  Gives some additional functionality.
 	var QuirkCollection = function(elements){
-		var collection = []
+		var _collection = []
 		if(Quirk.isNodeList(elements)){
 			for(var i=0;i<elements.length;i++)
-				collection.push(new QuirkObject(elements[i]));
+				_collection.push(new QuirkObject(elements[i]));
 		}
 
 		this.position = 0;
-		this.length = collection.length;
+		this.length = function(){
+			return _collection.length;
+		}
 
 		this.each = function(func){
-			for(item in collection)
-				func(collection[item]);
+			for(item in _collection)
+				func(_collection[item]);
 			return this;
 		}
 
 		this.next = function(){
-			return collection[this.position++] || null;
+			return _collection[this.position++] || null;
 		}
 
 		this.reset = function(){
@@ -146,7 +148,6 @@
 		}
 	}
 
-
 	var QuirkObject = function(e){
 		var _element = e;
 		var _type 	= _element.tagName.toLowerCase() || undefined;
@@ -155,15 +156,20 @@
 
 		switch(_type){
 			case 'a': // only for anchors.
-				this.href 	= function(url)		{ return this.attr('href',url);				}
-				this.target = function(target)	{ return this.attr('target',target);		} 
+				this.href = function(url){ 
+					return this.attr('href',url);
+				}
+				
+				this.target = function(target){ 
+					return this.attr('target',target);
+				} 
 			break;
 		}
 		
-		this.data 	= function(key, value){ 
+		this.data = function(key, value){ 
 			return this.attr('data-' + key, value); 	
 		}
-		this.id 	= function(id){ 
+		this.id = function(id){ 
 			return this.attr('id', id);				
 		}
 		
@@ -172,8 +178,12 @@
 			if(_events[action] == undefined)
 				_events[action] = []
 
-			_events[action].push(func);
-			_element.addEventListener(action, func, false);
+			var callback = function(){
+				func(window.event);
+			}
+
+			_events[action].push(callback);
+			_element.addEventListener(action, callback, false);
 			return this;
 		}
 
@@ -272,6 +282,6 @@
 		for(var i=0; i < Quirk.ready.queue.length; i++) 
 			Quirk.ready.queue[i]();
 	}, false);
-	
+
 	if(!window.Q || !window.Quirk){window.Quirk = window.Q = Quirk;}
 })();
