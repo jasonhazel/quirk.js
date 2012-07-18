@@ -1,0 +1,27 @@
+<html>
+	<head>
+		<title>JS Framework Test</title>
+		<script type='text/javascript' src='../quirk.js'></script>
+		<link rel="stylesheet" type="text/css" href="style.css" />
+		<script type='text/javascript'>
+			Q.ready(function()
+			{
+				var body = Q('body');
+				var contents = Q('div');
+
+				contents.on('click', function()
+				{
+					alert(Q(this).text());
+				});
+
+			});
+		</script>
+
+	</head>
+
+	<body>
+		<div>one</div>
+		<div>two</div>
+		<div>three</div>
+	</body>
+</html>
