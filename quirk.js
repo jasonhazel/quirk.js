@@ -1,210 +1,218 @@
 (function(){
 	var Quirk = function(selector)
 	{
-		var type = selector.charAt(0);
-		var element = selector.substring(1,selector.length);
-		switch(type)
+		if(selector != undefined)
 		{
-			case '#':
-				return new qObj(document.getElementById(element));
-			break;
-			case '.':
-				return new qCollection(document.getElementsByClassName(element));
-			break;
-			case '<':
-				if(element.charAt(element.length - 1) == '>')
-					return new qObj(document.createElement(selector.substring(1,element.length)));
-				else
-					return new qCollection();
-			break;
-			default:
-				e = document.getElementsByTagName(selector);
-				if(e.length > 1)
-					return new qCollection(e);
-				else
-					return (e[0] == undefined ? new qCollection() : new qObj(e[0]));
-			break;
+			var type = selector.charAt(0);
+			var element = selector.substring(1,selector.length);
+
+			switch(type)
+			{
+				case '#':
+					return new QuirkObject(document.getElementById(element));
+				break;
+				case '.':
+					return new QuirkCollection(document.getElementsByClassName(element));
+				break;
+				case '<':
+					if(element.charAt(element.length - 1) == '>')
+						return new QuirkObject(document.createElement(selector.substring(1,element.length)));
+					else
+						return new QuirkCollection();
+				break;
+				default:
+					e = document.getElementsByTagName(selector);
+					if(e.length > 1)
+						return new QuirkCollection(e);
+					else
+						return (e[0] == undefined ? new QuirkCollection() : new QuirkObject(e[0]));
+				break;
+			}
 		}
 	}
 
-	// add a function to the wait queue.
-	Quirk.ready = function(func) { Quirk.ready.queue.push(func); }
 
-Quirk.ready.queue = []
-	var qCollection = function(elements)
+	
+	Quirk.ready 		= function(func) 		{ Quirk.ready.queue.push(func);	}
+	Quirk.ready.queue 	= []
+	
+	//utility methods
+	Quirk.isArray 		= function(variable)	{ return (variable instanceof Array); }
+	Quirk.isNodeList 	= function(variable)	{ return (variable instanceof NodeList); }
+	Quirk.isList 		= function(variable) 	{ return Quirk.isArray(variable) || Quirk.isNodeList(variable); }
+
+
+	var QuirkCollection = function(elements)
 	{
-		if(elements == undefined) elements = []
 		var collection = []
-		this.position = 0;
-
-		for(var item = 0; item < elements.length; item++)
+		if(Quirk.isNodeList(elements))
 		{
-			if(elements[item] != undefined)
-				collection.push(new qObj(elements[item]));
-		}	
+			for(var i=0;i<elements.length;i++)
+				collection.push(new QuirkObject(elements[i]));
+		}
+
+		this.position = 0;
+		this.length = collection.length;
 
 		this.each = function(func)
 		{
-			for(var item = 0; item < collection.length; item++)
-				func(collection[item]);	
+			for(item in collection)
+				func(collection[item]);
+
+			return this;
 		}
 
 		this.next = function()
 		{
-			if(this.position >= this.length)
-				return null;
-			else
-				return collection[this.position++];
+			return collection[this.position++] || null;
 		}
 
 		this.reset = function()
 		{
-			position = 0;
+			this.position = 0;
+			return this;
 		}
 
-		this.length = collection.length;
+		this.remove = function()
+		{
+			this.each(function(e){e.remove();})
+			return this;
+		}
 	}
 
-	// this is where most of the magic happens.
-	var qObj = function(element)
-	{
-		// kinda hacky right now.
-		this.element 	= element;
-		this.type 		= this.element.tagName.toLowerCase();
-		this.events 	= []
 
-		// not all objects require all methods.  Here we provided object specific methods.
-		switch(this.type)
+	var QuirkObject = function(e)
+	{
+		var _element = e;
+		var _type 	= _element.tagName.toLowerCase() || undefined;
+		var _events 	= []
+		
+		this.element = _element;
+
+
+		switch(_type)
 		{
-			case 'a':
-				this.href 	= function(url) 	{ return this.attr('href', url); }
-				this.target = function(target) 	{ return this.attr('target', target); }
+			case 'a': // only for anchors.
+				this.href 	= function(url)		{ return this.attr('href',url);				}
+				this.target = function(target)	{ return this.attr('target',target);		} 
 			break;
 		}
-
-		this.id 	= function(id)			{ return this.attr('id',id); }
-		this.data 	= function(item, value)	{ return this.attr('data-' + item, value); }
-
+		
+		this.data 	= function(key, value)		{ return this.attr('data-' + key, value); 	}
+		this.id 	= function(id)				{ return this.attr('id', id);				}
+		
 		//event listener
 		this.on = function(action, func)
 		{
-			if(this.events[action] == undefined)
-				this.events[action] = []
+			if(_events[action] == undefined)
+				_events[action] = []
 
-			this.events[action].push(func);
-			this.element.addEventListener(action, func , false);
+			_events[action].push(func);
+			_element.addEventListener(action, func, false);
 			return this;
 		}
 
 		//I don't like calling this off. needs a better name.
 		this.off = function(action) 
 		{
-			for(func in this.events[action])
-				this.element.removeEventListener(action, this.events[action][func]);
+			for(func in _events[action])
+				_element.removeEventListener(action, _events[action][func]);
 			return this;
 		}
 
-		// I'm sure there is a better way to do this.
-		this.text = function(value)
-		{
-			if(this.type != 'input')
-			{
-				if(value != undefined)
-					this.element.innerHTML = value;
-				else
-					return this.element.innerHTML;
-			}
-			else 
-			{
-				if(value != undefined)
-					this.element.value = value;
-				else
-					return this.element.value;
-			}
-			return this;
-		}
-		
 		this.attr = function(key, value)
 		{
-			if(value != undefined && key != undefined)
-			{
-				this.element.setAttribute(key, value);
-				return this;
-			}
+			if(key != undefined && value != undefined)
+				_element.setAttribute(key, value);
 			else if (key != undefined)
-			{
-				return this.element.getAttribute(key);
-			}
-			else
-				return this;
-		}
-		
-		this.addClass = function(klass)
-		{
-			this.element.classList.add(klass);
-			return this;
-		}
-		
-		this.removeClass = function(klass)
-		{
-			this.element.classList.remove(klass);
-			return this;
-		}
-		
-		this.append = function(child)
-		{
-			if(child instanceof qObj)
-				this.element.appendChild(child.element);
-			else
-				this.element.appendChild(child);
-			return this;
-		}
-		
-		this.appendTo = function(parent)
-		{
-			if(parent instanceof qObj)
-				parent.append(this.element);
-			else
-				parent.appendChild(this.element);
+				return _element.getAttribute(key);
+
 			return this;
 		}
 
-		this.hide = function()
+		this.addClass = function(className)
 		{
-			this.element.style.visibility = 'hidden';
+			_element.classList.add(className);
 			return this;
 		}
 
-		this.show = function()
+		this.removeClass = function(className)
 		{
-			this.element.style.visibility = 'visible';
+			_element.classList.remove(className);
+			return this;;
+		}
+
+		this.toggleClass = function(className)
+		{
+			_element.classList.toggle(className);
 			return this;
 		}
 
-		this.toggle = function()
+		this.hasClass = function(className)
 		{
-			this.element.style.visibility = (this.element.style.visibility == 'hidden' ? 'visible' : 'hidden');
+			return _element.classList.contains(className);
+		}
+
+		this.hasProperty = function(property)
+		{
+			return _element.hasOwnProperty(property);
+		}
+
+		this.text = function(value)
+		{
+			var field = (this.hasProperty('value') ? 'value' : 'innerHTML');
+			if(value != undefined)
+				_element[field] = value;
+			else
+				return _element[field];
+			
 			return this;
 		}
 
 		this.remove = function()
 		{
-			this.element.parentNode.removeChild(this.element);
+			_element.parentNode.removeChild(_element);
+		}
+
+		this.append = function(child)
+		{
+
+			_element.appendChild((child instanceof QuirkObject ? child.element : child));
 			return this;
 		}
 
-	}
-
-	//once document is loaded, loop through the wait list and execute and functions.
-	document.onreadystatechange = function()
-	{
-		if(document.readyState == 'complete')
+		this.appendTo = function(parent)
 		{
-			for(var i=0; i < Quirk.ready.queue.length; i++)
-				Quirk.ready.queue[i]();
+			(parent instanceof QuirkObject ? parent.element : parent).appendChild(this.element);
+		}
+
+		this.prepend = function(child)
+		{
+			_element.insertBefore((child instanceof QuirkObject ? child.element : child) , _element.firstChild);
+		}
+
+		this.prependTo = function(parent)
+		{
+			var parent = (parent instanceof QuirkObject ? parent.element : parent)
+			parent.insertBefore(_element, parent.firstChild);
+		}
+
+		this.hide = function()
+		{
+			_element.style.visibility = 'hidden';
+		}
+
+		this.show = function()
+		{
+			_element.style.visibility = 'visible';
+		}
+
+		this.toggle = function()
+		{
+			_element.style.visibility = (_element.style.visibility == 'hidden' ? 'visible' : 'hidden');
 		}
 	}
 
+	document.addEventListener('DOMContentLoaded', function(){for(var i=0; i < Quirk.ready.queue.length; i++) Quirk.ready.queue[i]();}, false);
 	if(!window.Q || !window.Quirk){window.Quirk = window.Q = Quirk;}
 })();
-

@@ -4,47 +4,28 @@
 		<script type='text/javascript' src='quirk.js'></script>
 		<link rel="stylesheet" type="text/css" href="style.css" />
 		<script type='text/javascript'>
-			Q.ready(function(){
-				var body 	= Q('body');
-				var button 	= Q('<button>');
-				var text 	= Q('<input>');
-				var header	= Q('<h1>');
+			Q.ready(function()
+			{
+				var body = Q('body');
+				var a = Q('<a>');
+				var b = Q('<a>')
+
+				a.text('testing').href('http://craptard.com');
+				b.text('test2');
+				
+				b.prependTo(body);
+				body.prepend(a);
+
+				a.on('click',function(){b.toggle(); preventDefault});
 
 
-
-
-				body.append(header.text('Quirk.js Test'))
-					.append(text)
-					.append(button.text('Display'));
-
-				text.addClass('bold');
-				button.addClass('bold');
-				button.addClass('remove_bold');
-				var a = Q('.remove_bold');
-
-
-
-
-
-				a.each(function(e){
-					e.removeClass('bold');
-				});
-
-				// while(y = a.next())
-				// {
-				// 	y.text(a.position);
-				// 	y.href('testing.com');
-				// }
-
-				button.on('click', function(){
-						alert(text.text());
-				});
 			});
 		</script>
 
 	</head>
 
 	<body>
+
 	</body>
 	
 </html>
