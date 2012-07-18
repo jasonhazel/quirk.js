@@ -7,10 +7,12 @@
 			Q.ready(function()
 			{
 				var body = Q('body');
-				var contents = Q('<div>');
+				var contents = Q('div');
 
-				contents.appendTo(body);
-				contents.load({url: 'ajax.txt'})
+				contents.on('click', function()
+				{
+					alert(Q(this).text());
+				});
 
 			});
 		</script>
@@ -18,6 +20,8 @@
 	</head>
 
 	<body>
-
+		<div>one</div>
+		<div>two</div>
+		<div>three</div>
 	</body>
 </html>

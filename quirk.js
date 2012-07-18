@@ -1,29 +1,34 @@
 (function(){
 	var Quirk = function(selector){
-		if(selector != undefined){
-			var type = selector.charAt(0);
-			var element = selector.substring(1,selector.length);
 
-			switch(type){
-				case '#':
-					return new QuirkObject(document.getElementById(element));
-				break;
-				case '.':
-					return new QuirkCollection(document.getElementsByClassName(element));
-				break;
-				case '<':
-					if(element.charAt(element.length - 1) == '>')
-						return new QuirkObject(document.createElement(selector.substring(1,element.length)));
-					else
-						return new QuirkCollection();
-				break;
-				default:
-					e = document.getElementsByTagName(selector);
-					if(e.length > 1)
-						return new QuirkCollection(e);
-					else
-						return (e[0] == undefined ? new QuirkCollection() : new QuirkObject(e[0]));
-				break;
+		if(selector != undefined){
+			if(selector instanceof HTMLElement)
+				return new QuirkObject(selector);
+			else {
+				var type = selector.charAt(0);
+				var element = selector.substring(1,selector.length);
+
+				switch(type){
+					case '#':
+						return new QuirkObject(document.getElementById(element));
+					break;
+					case '.':
+						return new QuirkCollection(document.getElementsByClassName(element));
+					break;
+					case '<':
+						if(element.charAt(element.length - 1) == '>')
+							return new QuirkObject(document.createElement(selector.substring(1,element.length)));
+						else
+							return new QuirkCollection();
+					break;
+					default:
+							e = document.getElementsByTagName(selector);
+							if(e.length > 1)
+								return new QuirkCollection(e);
+							else
+								return (e[0] == undefined ? new QuirkCollection() : new QuirkObject(e[0]));
+					break;
+				}
 			}
 		}
 	}
@@ -131,6 +136,16 @@
 
 		this.remove = function(){
 			this.each(function(e){e.remove();})
+			return this;
+		}
+
+		this.on = function(action, func){
+			this.each(function(e){e.on(action, func);})
+			return this;
+		}
+
+		this.off = function(action){
+			this.each(function(e){e.off(action);})
 			return this;
 		}
 	}
@@ -257,6 +272,9 @@
 		}
 	}
 
-	document.addEventListener('DOMContentLoaded', function(){for(var i=0; i < Quirk.ready.queue.length; i++) Quirk.ready.queue[i]();}, false);
+	document.addEventListener('DOMContentLoaded', function(){
+		for(var i=0; i < Quirk.ready.queue.length; i++) 
+			Quirk.ready.queue[i]();
+	}, false);
 	if(!window.Q || !window.Quirk){window.Quirk = window.Q = Quirk;}
 })();
