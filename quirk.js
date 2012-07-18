@@ -76,8 +76,6 @@
 			query: {}
 		}
 
-
-
 		options = Quirk.objectMerge(options, defaults);
 
 		options.type.toUpperCase();
@@ -92,7 +90,7 @@
 
 		if(options.async !== true)
 			success(xhr.responseText);
-		else{
+		else {
 				xhr.onreadystatechange = function(){
 					if(xhr.readyState == 4 && xhr.status == 200)
 						if(success != undefined) success(xhr.responseText);
@@ -250,15 +248,12 @@
 		}
 
 		this.load = function(options){
-			
 			var destination = this;
 			Quirk.ajax(options, function(data){
 				destination.text(data);
 			}, function(data){
-				this.text(data.text);
+				destination.text(data.text);
 			})
-
-
 		}
 	}
 
