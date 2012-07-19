@@ -179,7 +179,7 @@
 				_events[action] = []
 
 			var callback = function(){
-				func(window.event);
+				func(this, window.event);
 			}
 
 			_events[action].push(callback);
@@ -276,6 +276,41 @@
 				destination.text(data.text);
 			})
 		}
+
+		this.fadeOut = function(speed){
+			var speeds = {slow: 10, medium: 5, fast: 2}
+			var step = (speed != undefined ? speeds[speed] : speeds.slow);
+			if(_element.style.opacity == null || _element.style.opacity == undefined || _element.style.opacity == '')
+				_element.style.opacity = 1;
+
+			var animate = function(){
+				_element.style.opacity = _element.style.opacity - (_element.style.opacity/step);
+
+				if((Math.round(_element.style.opacity * 100)/100).toFixed(2) < 0.01)
+					clearInterval(animateInterval);
+			}
+
+			var animateInterval = setInterval(animate, 100);
+		}
+
+		this.fadeIn = function(speed){
+			var speeds = {slow: 10, medium: 5, fast: 2}
+			var step = (speed != undefined ? speeds[speed] : speeds.slow);
+			if(_element.style.opacity == null || _element.style.opacity == undefined || _element.style.opacity == '' || parseFloat(_element.style.opacity) > 1)
+				_element.style.opacity = 0;
+
+			var animate = function(){
+				_element.style.opacity = parseFloat(_element.style.opacity) + (1/step);
+
+				if((Math.round(_element.style.opacity * 100)/100).toFixed(2) > 1)
+					clearInterval(animateInterval);
+			}
+
+			var animateInterval = setInterval(animate, 100);
+		}
+
+
+
 	}
 
 	document.addEventListener('DOMContentLoaded', function(){
