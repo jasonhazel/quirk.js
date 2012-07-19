@@ -209,7 +209,7 @@
 
 		this.removeClass = function(className){
 			_element.classList.remove(className);
-			return this;;
+			return this;
 		}
 
 		this.toggleClass = function(className){
@@ -219,6 +219,14 @@
 
 		this.hasClass = function(className){
 			return _element.classList.contains(className);
+		}
+
+		this.style = function(key, value){
+			if(key != undefined && value != undefined)
+				_element.style[key] = value;
+			else if (key != undefined)
+				return _element.style[key];
+			return this;
 		}
 
 		this.hasProperty = function(property){
@@ -277,40 +285,42 @@
 			})
 		}
 
-		this.fadeOut = function(speed){
-			var speeds = {slow: 10, medium: 5, fast: 2}
-			var step = (speed != undefined ? speeds[speed] : speeds.slow);
-			if(_element.style.opacity == null || _element.style.opacity == undefined || _element.style.opacity == '')
-				_element.style.opacity = 1;
+		this.fade = function(direction, speed){
+			var speeds = {slow: 11, medium: 6, fast: 3}
+			speed = (speed != undefined ? speeds[speed] : speed.slow);
+			direction = direction.toUpperCase();
 
-			var animate = function(){
-				_element.style.opacity = _element.style.opacity - (_element.style.opacity/step);
+			if(this.style('opacity') == null || this.style('opacity') == undefined || this.style('opacity') == '' || this.style('opacity') > 1 || this.style('opacity') < 0)
+				this.style('opacity', (direction == 'IN' ? 0 : 1));
 
-				if((Math.round(_element.style.opacity * 100)/100).toFixed(2) < 0.01)
-					clearInterval(animateInterval);
+
+			if(direction == 'IN')
+			{
+				var step = -(1/speed).toFixed(2);
+				var check = function(current){ return (current > 1); }
+			}
+			else
+			{
+				var step = (parseFloat(_element.style.opacity/speed)).toFixed(2);
+				var check = function(current){ return (current <= 0.01); }
 			}
 
-			var animateInterval = setInterval(animate, 100);
+			var animate = function(){
+				console.debug('running');
+				_element.style.opacity = parseFloat(_element.style.opacity) - step;
+				if(check((Math.round(_element.style.opacity * 100)/100).toFixed(2)))
+					clearInterval(interval);
+			}
+			var interval = setInterval(animate, 100); 
+		}
+
+		this.fadeOut = function(speed){
+			this.fade('out',speed);
 		}
 
 		this.fadeIn = function(speed){
-			var speeds = {slow: 10, medium: 5, fast: 2}
-			var step = (speed != undefined ? speeds[speed] : speeds.slow);
-			if(_element.style.opacity == null || _element.style.opacity == undefined || _element.style.opacity == '' || parseFloat(_element.style.opacity) > 1)
-				_element.style.opacity = 0;
-
-			var animate = function(){
-				_element.style.opacity = parseFloat(_element.style.opacity) + (1/step);
-
-				if((Math.round(_element.style.opacity * 100)/100).toFixed(2) > 1)
-					clearInterval(animateInterval);
-			}
-
-			var animateInterval = setInterval(animate, 100);
+			this.fade('in',speed);
 		}
-
-
-
 	}
 
 	document.addEventListener('DOMContentLoaded', function(){

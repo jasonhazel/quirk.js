@@ -11,7 +11,7 @@
 				a.on('click',function(t, e){
 					e.preventDefault();
 					console.debug(t);
-					Q(t).fadeIn(Q(t).text());
+					Q(t).fade('out',Q(t).data('speed'));
 					// alert('clicked');
 					
 				});
@@ -19,8 +19,8 @@
 		</script>
 	</head>
 	<body>
-		<a href='http://jasonhazel.com'>slow</a>
-		<a href='http://jasonhazel.com'>medium</a>
-		<a href='http://jasonhazel.com'>fast</a>
+		<a href='http://jasonhazel.com' data-speed='slow'>slow</a>
+		<a href='http://jasonhazel.com' data-speed='medium'>medium</a>
+		<a href='http://jasonhazel.com' data-speed='fast'>fast</a>
 	</body>
 </html>
